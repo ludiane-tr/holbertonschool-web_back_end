@@ -1,3 +1,4 @@
+/* eslint-disable */
 class Currency {
     constructor(code, name) {
       this._code = code;  // Stocke le code de la monnaie

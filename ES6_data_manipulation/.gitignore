@@ -1,3 +1,8 @@
+ES6_data_manipulation/package-lock.json
+ES6_data_manipulation/babel.config.js
+ES6_data_manipulation/.eslintrc.js
+ES6_data_manipulation/.gitignore
+ES6_data_manipulation/package.json
 node_modules/
 ES6_data_manipulation/.gitignore
 ES6_data_manipulation/0-main.js

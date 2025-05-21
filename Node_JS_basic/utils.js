@@ -1,27 +1,26 @@
-// utils.js
 const fs = require('fs');
 
-function readDatabase(filePath) {
+function readDatabase(path) {
   return new Promise((resolve, reject) => {
-    fs.readFile(filePath, 'utf8', (err, data) => {
+    fs.readFile(path, 'utf8', (err, data) => {
       if (err) {
-        reject(err);
+        reject(new Error('Cannot load the database'));
         return;
       }
 
-      const lines = data.trim().split('\n');
-      const fields = {};
+      const lines = data.split('\n').filter((line) => line.trim() !== '');
+      lines.shift(); // En-tête
 
-      for (let i = 1; i < lines.length; i++) {
-        const [firstname, lastname, age, field] = lines[i].split(',');
-
-        if (!fields[field]) {
-          fields[field] = [];
+      const result = {};
+      for (const line of lines) {
+        const [firstname, , , field] = line.split(',');
+        if (field) {
+          if (!result[field]) result[field] = [];
+          result[field].push(firstname);
         }
-        fields[field].push(firstname);
       }
 
-      resolve(fields);
+      resolve(result);
     });
   });
 }

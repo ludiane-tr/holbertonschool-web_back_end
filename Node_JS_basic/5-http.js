@@ -1,6 +1,5 @@
 const http = require('http');
-const readDatabase = require('./utils'); // ou './readDatabase'
-const path = process.argv[2];
+const countStudents = require('./3-read_file_async');
 
 const app = http.createServer((req, res) => {
   res.statusCode = 200;
@@ -9,27 +8,17 @@ const app = http.createServer((req, res) => {
   if (req.url === '/') {
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
-    readDatabase(path)
-      .then((fields) => {
-        let response = 'This is the list of our students';
-
-        const total = Object.values(fields).reduce((acc, list) => acc + list.length, 0);
-        response += `\nNumber of students: ${total}`;
-
-        for (const field in fields) {
-          const list = fields[field];
-          response += `\nNumber of students in ${field}: ${list.length}. List: ${list.join(', ')}`;
-        }
-
-        res.end(response);
+    const database = process.argv[2];
+    countStudents(database)
+      .then((output) => {
+        res.end(`This is the list of our students\n${output}`);
       })
-      .catch((err) => {
-        res.statusCode = 500;
-        res.end('Cannot load the database');
+      .catch((error) => {
+        res.end(`This is the list of our students\n${error.message}`);
       });
   } else {
     res.statusCode = 404;
-    res.end('Not Found');
+    res.end('Invalid request');
   }
 });
 
